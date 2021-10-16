@@ -11,26 +11,26 @@ import java.util.Date;
 
 public class HotelResource {
     public static Customer getCustomer(String email) {
-        return CustomerService.getCustomer(email);
+        return service.CustomerService.getCustomer(email);
     }
 
     public static void createACustomer(String email, String firstName, String lastName) {
-        CustomerService.addCustomer(email, firstName, lastName);
+        service.CustomerService.addCustomer(email, firstName, lastName);
     }
 
     public static IRoom getRoom(String roomNumber) {
-        return ReservationService.getARoom(roomNumber);
+        return service.ReservationService.getARoom(roomNumber);
     }
 
     public static Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate) {
-
+        return service.ReservationService.reserveARoom(getCustomer(customerEmail), room, checkInDate, checkOutDate);
     }
 
     public static Collection<Reservation> getCustomerReservations(String customerEmail) {
-//        ReservationService.getCustomerReservation();
+        return ReservationService.getCustomerReservation(getCustomer(customerEmail));
     }
 
     public static Collection<IRoom> findARoom(Date checkIn, Date checkOut) {
-        ReservationService.findRooms(checkIn, checkOut);
+        return service.ReservationService.findRooms(checkIn, checkOut);
     }
 }

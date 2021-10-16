@@ -6,28 +6,32 @@ import service.CustomerService;
 import service.ReservationService;
 
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 public class AdminResource {
+    private static List<IRoom> allRooms = new LinkedList<IRoom>();
+
     public static Customer getCustomer(String email) {
-        return CustomerService.getCustomer(email);
+        return service.CustomerService.getCustomer(email);
     }
 
     public static void addRoom(List<IRoom> rooms) {
         for (IRoom room : rooms) {
-            ReservationService.addRoom(room);
+            service.ReservationService.addRoom(room);
+            allRooms.add(room);
         }
     }
 
     public static Collection<IRoom> getAllRooms() {
-        return ReservationService.getARoom(); //TODO - iteration?
+        return allRooms;
     }
 
     public static Collection<Customer> getAllCustomers() {
-        return CustomerService.getAllCustomers();
+        return service.CustomerService.getAllCustomers();
     }
 
     public static void displayAllReservations() {
-        ReservationService.printAllReservation();
+        service.ReservationService.printAllReservation();
     }
 }

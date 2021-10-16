@@ -9,8 +9,8 @@ import java.util.*;
 
 public class ReservationService {
 
-    static Map<String, IRoom> roomPool = new HashMap<String, IRoom>();
-    static Map<Customer, Reservation> reservations = new HashMap<Customer, Reservation>();
+    static private Map<String, IRoom> roomPool = new HashMap<String, IRoom>();
+    static private Map<Customer, Reservation> reservations = new HashMap<Customer, Reservation>();
 
     public static void addRoom(IRoom room) {
         roomPool.put(room.getRoomNumber(), room);
@@ -35,7 +35,12 @@ public class ReservationService {
             for(Map.Entry<String, IRoom> room : roomPool.entrySet()) {
                 possibleRoom = room.getValue();
                 reservedRoom = reservationEntry.getValue().getRoom();
+                Date reservedInDate = reservationEntry.getValue().getCheckInDate();
+                Date reservedOutDate = reservationEntry.getValue().getCheckOutDate();
+
                 if(!(reservedRoom.getRoomNumber().equals(possibleRoom.getRoomNumber()))) {
+                    possibleRooms.add(possibleRoom);
+                } else if(reservedInDate.equals(checkInDate) && reservedInDate.after(reservedOutDate)) {
                     possibleRooms.add(possibleRoom);
                 }
             }
@@ -56,7 +61,4 @@ public class ReservationService {
             reservations.get(customer1).toString();
         }
     }
-
-    Collection<Reservation> reservationCollection = new LinkedList<Reservation>();
-
 }
