@@ -1,83 +1,120 @@
 package uiComponents;
 
+import api.AdminResource;
+import model.IRoom;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 public class MainMenu {
-    private String inputRegex = "^([1-5])"; // Regular expression for receiving digits only.
-    private String emailRegex = "^(.+)@(.+)\\.(.+)$";
-    private String answerRegex = "^[yn]$";
 
-    public void menuItems00() {
-    System.out.println("1. Find and Reserve a room");
-    System.out.println("2. See my reservations");
-    System.out.println("3. Create an account");
-    System.out.println("4. Admin");
-    System.out.println("5. Exit");
 
-    switch (getInput()) {
-        case "1": menuItems01();
-        case "2": menuItems02();
-        case "3": menuItems03();
-    }
+    public static void main(String[] args) {
+        MainMenu.menuItems00();
     }
 
-    public void menuItems01() {
+    public static void menuItems00() {
+        System.out.println("\n-------Welcome to Hotel Reservation Application-------");
         System.out.println("1. Find and Reserve a room");
         System.out.println("2. See my reservations");
         System.out.println("3. Create an account");
         System.out.println("4. Admin");
         System.out.println("5. Exit");
+
+        String input = InputHandler.getNumberInput();
+        switch (input) {
+            case "1": menuItems01();
+            case "2": menuItems02();
+            case "3": menuItems03();
+            case "4": menuItems04();
+            case "5": System.out.println("Thank you & Good Bye"); System.exit(0);
+        }
     }
 
-    public void menuItems02() {
+    public static void menuItems01() {
+        System.out.println("\n-------Welcome to Room Finder & Reservation Menu-------");
+        System.out.println("1. Find a room (by check in & check out dates)\n" +
+                "2. Book a room\n" +
+                "3. See a specific room (by number)\n" +
+                "4. See all customer reservations\n" +
+                "5. Back to Main Menu\n");
+
+        switch (InputHandler.getNumberInput()) {
+            case "1": ;
+            case "2": ;
+            case "3": { System.out.println("Please enter a room number (1 - 300)");
+                api.HotelResource.getRoom(InputHandler.getRoomNumber()); }
+            case "4": api.HotelResource.getCustomerReservations(InputHandler.enterEmail());
+            case "5": menuItems00();
+        }
+    }
+
+    public static void menuItems02() {
+        System.out.println("\n-------Welcome to Reservations Info Menu-------");
         System.out.println("Do you have an account with us? \n" +
                 "(Please enter y/n)" );
-        Scanner answer = new Scanner(System.in);
-        if (checkAnswer(answer.toString()).equals("n")) {
-            System.out.println("Please create an account first, and book a room");
+        String email;
+        if (InputHandler.checkAnswer().equals("n")) {
+            System.out.println("Please create an account first, and then book a room");
             menuItems00();
         } else {
             System.out.println("Please insert your email: ");
-            Scanner emailScan = new Scanner(System.in);
-            String email = checkEmail(emailScan.toString());
-            service.ReservationService.getCustomerReservation(service.CustomerService.getCustomer(email));
+            email = InputHandler.enterEmail();
+            System.out.println("Your reservations are:");
+            api.HotelResource.getCustomerReservations(email);
+            System.out.println("Thank you!\n");
+            menuItems00();
         }
     }
 
-    public void menuItems03() {
-        System.out.println("-------Welcome to Account Creation Menu-------");
-        System.out.println("Please enter your name:");
 
+    public static void menuItems03() {
+        System.out.println("\n-------Welcome to Account Creation Menu-------");
+        String firstName;
+        String lastName;
+        String email;
+        try {
+            System.out.println("Please enter first name:");
+            BufferedReader firstNameRead = new BufferedReader(new InputStreamReader(System.in));
+            firstName = firstNameRead.readLine();
+
+            System.out.println("Please enter last name:");
+            BufferedReader lastNameRead = new BufferedReader(new InputStreamReader(System.in));
+            lastName = lastNameRead.readLine();
+
+            System.out.println("Please enter email:");
+            email = InputHandler.enterEmail();
+            System.out.println("The email is: " + email);
+
+            api.HotelResource.createACustomer(email, firstName, lastName);
+            System.out.println("Account Created. \nThank you!");
+        } catch (IOException e) {
+            System.out.println("IOException: " + e);
+        }
+        menuItems00();
     }
 
-    public String getInput() {
-        Scanner scanner = new Scanner(System.in);
-        Pattern pattern = Pattern.compile(inputRegex);
-        if (!pattern.matcher(scanner.toString()).matches()) {
-            throw new IllegalArgumentException("Error, Invalid number");
-        } else {
-            return scanner.toString();
+    public static void menuItems04() {
+        System.out.println("\n-------Welcome to Admin Menu-------");
+        System.out.println("1. Display all customers accounts\n" +
+                "2. View all the rooms in the hotel\n" +
+                "3. View all hotel reservations\n" +
+                "4. Add a room\n" +
+                "5. Back to Main Menu");
+        switch(InputHandler.getNumberInput()) {
+            case "1": AdminResource.getAllCustomers();
+            case "2": {for (IRoom room : AdminResource.getAllRooms()) {
+                room.toString();
+                } }
+            case "3": AdminResource.displayAllReservations();
+            case "4": List<String> roomsList = new LinkedList<>();
+            AdminResource.addRoom(InputHandler.getRoomNumber());
+            case "5": menuItems00();
         }
-    }
 
-    public String checkEmail(String email) {
-        Pattern pattern = Pattern.compile(emailRegex);
-        if(!pattern.matcher(email).matches()) {
-            System.out.println("Error, Invalid email. Please try again");
-            throw new IllegalArgumentException("Error, Invalid email");
-        } else {
-           return email;
-        }
-    }
-
-    public String checkAnswer(String ans) {
-        Pattern pattern = Pattern.compile(answerRegex);
-        if(!pattern.matcher(ans).matches()) {
-            System.out.println("Error, Invalid email. Please try again");
-            throw new IllegalArgumentException("Error, Invalid input");
-        } else {
-            return ans;
-        }
     }
 }

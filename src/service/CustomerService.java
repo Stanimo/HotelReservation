@@ -11,7 +11,7 @@ public class CustomerService {
     private static Map<String, Customer> customers = new HashMap<String, Customer>();
 
     public static void addCustomer(String email, String firstName, String lastName) {
-        Customer currentCustomer = new Customer(email, firstName, lastName);
+        Customer currentCustomer = new Customer(firstName, lastName, email);
         customers.put(email, currentCustomer);
     }
 
