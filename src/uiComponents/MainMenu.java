@@ -111,8 +111,20 @@ public class MainMenu {
                 room.toString();
                 } }
             case "3": AdminResource.displayAllReservations();
-            case "4": List<String> roomsList = new LinkedList<>();
-            AdminResource.addRoom(InputHandler.getRoomNumber());
+            case "4": {
+                List<IRoom> roomsList = new LinkedList<>();
+                roomsList.add(InputHandler.getRoomNumber());
+                String contInput;
+                do {
+                    roomsList.add(InputHandler.getRoomNumber());
+                    InputHandler.getRoomNumber();
+                    System.out.println("Add another a room? (y/n)");
+                    contInput = InputHandler.checkAnswer();
+                }
+                while (contInput.equals("y"));
+
+                AdminResource.addRoom(roomsList);
+            }
             case "5": menuItems00();
         }
 
