@@ -2,6 +2,8 @@ package uiComponents;
 
 import api.AdminResource;
 import model.IRoom;
+import model.Room;
+import model.RoomType;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -60,7 +62,7 @@ public class MainMenu {
         String email;
         if (InputHandler.checkAnswer().equals("n")) {
             System.out.println("Please create an account first, and then book a room");
-            menuItems00();
+            menuItems03();
         } else {
             System.out.println("Please insert your email: ");
             email = InputHandler.enterEmail();
@@ -110,20 +112,35 @@ public class MainMenu {
             case "2": {for (IRoom room : AdminResource.getAllRooms()) {
                 room.toString();
                 } }
-            case "3": AdminResource.displayAllReservations();
+            case "3": { AdminResource.displayAllReservations();
+                menuItems04();
+                }
             case "4": {
+                System.out.println("Welcome to room addition menu:");
                 List<IRoom> roomsList = new LinkedList<>();
-                roomsList.add(InputHandler.getRoomNumber());
+                String roomNumber;
+                Double roomPrice;
+                RoomType roomType;
                 String contInput;
+
                 do {
-                    roomsList.add(InputHandler.getRoomNumber());
-                    InputHandler.getRoomNumber();
+                    System.out.println("Please insert room number:");
+                    roomNumber = InputHandler.getRoomNumber();
+
+                    System.out.println("Please insert room " + roomNumber + " price:");
+                    roomPrice = InputHandler.getRoomPrice();
+
+                    System.out.println("Please insert room " + roomNumber + " type:");
+                    roomType = InputHandler.getRoomType();
+
+                    roomsList.add(new Room(roomNumber, roomPrice, roomType));
                     System.out.println("Add another a room? (y/n)");
                     contInput = InputHandler.checkAnswer();
                 }
                 while (contInput.equals("y"));
 
                 AdminResource.addRoom(roomsList);
+                menuItems04();
             }
             case "5": menuItems00();
         }

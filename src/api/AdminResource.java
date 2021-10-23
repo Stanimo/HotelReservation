@@ -2,8 +2,7 @@ package api;
 
 import model.Customer;
 import model.IRoom;
-import service.CustomerService;
-import service.ReservationService;
+import model.Room;
 
 import java.util.Collection;
 import java.util.LinkedList;
