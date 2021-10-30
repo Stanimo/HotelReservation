@@ -5,4 +5,5 @@ public interface IRoom {
     double getRoomPrice();
     RoomType getRoomType();
     boolean isFree();
+
 }

@@ -22,7 +22,7 @@ public abstract class InputHandler {
         try {
             BufferedReader inputRead = new BufferedReader(new InputStreamReader(System.in));
             userInput = inputRead.readLine();
-            while (!pattern.matcher(userInput.toString()).matches()) {
+            while (!pattern.matcher(userInput).matches()) {
                 System.out.println("This input is illegal.\n" +
                         "Please enter a legal email (john@gmail.com)");
                 userInput = inputRead.readLine();
@@ -39,7 +39,7 @@ public abstract class InputHandler {
         try {
             BufferedReader inputRead = new BufferedReader(new InputStreamReader(System.in));
             userInput = inputRead.readLine();
-            while (!pattern.matcher(userInput.toString()).matches()) {
+            while (!pattern.matcher(userInput).matches()) {
                 System.out.println("This input is illegal.\n" +
                         "Please enter a legal email (john@gmail.com)");
                 userInput = inputRead.readLine();
@@ -56,7 +56,7 @@ public abstract class InputHandler {
         try {
             BufferedReader inputRead = new BufferedReader(new InputStreamReader(System.in));
             userInput = inputRead.readLine();
-            while (!pattern.matcher(userInput.toString()).matches()) {
+            while (!pattern.matcher(userInput).matches()) {
                 System.out.println("This input is illegal.\n" +
                         "Please enter one of the menu's corresponding number");
                 userInput = inputRead.readLine();
@@ -73,7 +73,7 @@ public abstract class InputHandler {
         try {
             BufferedReader inputRead = new BufferedReader(new InputStreamReader(System.in));
             userInput = inputRead.readLine();
-            while (!pattern.matcher(userInput.toString()).matches()) {
+            while (!pattern.matcher(userInput).matches()) {
                 System.out.println("This input is illegal.\n" +
                         "Please enter either 'Y' for YES ot 'N' for NO");
                 userInput = inputRead.readLine();
@@ -90,7 +90,7 @@ public abstract class InputHandler {
         try {
             BufferedReader inputRead = new BufferedReader(new InputStreamReader(System.in));
             userInput = inputRead.readLine();
-            while (!pattern.matcher(userInput.toString()).matches()) {
+            while (!pattern.matcher(userInput).matches()) {
                 System.out.println("This input is illegal.\n" +
                         "Please enter a room number in range between 1 - 300");
                 userInput = inputRead.readLine();
@@ -107,9 +107,18 @@ public abstract class InputHandler {
         try {
             BufferedReader inputRead = new BufferedReader(new InputStreamReader(System.in));
             userInput = inputRead.readLine();
-            while (!pattern.matcher(userInput.toString()).matches()) {
-                System.out.println("This input is illegal.\n" +
-                        "Please enter a price in range $0 - $5000");
+            try {
+                while (Double.parseDouble(userInput) < 0 || Double.parseDouble(userInput) > 5000) {
+                    System.out.println("This input is illegal.\n" +
+                            "Please enter a price in range $0 - $5000");
+                    userInput = inputRead.readLine();
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("The input should be a number.");
+                 //TODO figure out how to make the code keep running.
+            }
+            finally {
+                System.out.println("Please insert a room price (can be a number with a decimal dot)");
                 userInput = inputRead.readLine();
             }
         } catch (IOException e) {

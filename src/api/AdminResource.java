@@ -16,10 +16,11 @@ public class AdminResource {
     }
 
     public static void addRoom(List<IRoom> rooms) {
-        for (IRoom room : rooms) {
-            service.ReservationService.addRoom(room);
-            allRooms.add(room);
-        }
+        allRooms = rooms;
+//        for (IRoom room : rooms) {
+//            service.ReservationService.addRoom(room);
+//            allRooms.add(room);
+//        }
     }
 
     public static Collection<IRoom> getAllRooms() {

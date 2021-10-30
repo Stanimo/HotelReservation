@@ -5,6 +5,7 @@ import model.IRoom;
 import model.Room;
 import model.RoomType;
 
+import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -29,11 +30,11 @@ public class MainMenu {
 
         String input = InputHandler.getNumberInput();
         switch (input) {
-            case "1": menuItems01();
-            case "2": menuItems02();
-            case "3": menuItems03();
-            case "4": menuItems04();
-            case "5": System.out.println("Thank you & Good Bye"); System.exit(0);
+            case "1" -> menuItems01();
+            case "2" -> menuItems02();
+            case "3" -> menuItems03();
+            case "4" -> menuItems04();
+            case "5" -> {System.out.println("Thank you & Good Bye"); System.exit(0);}
         }
     }
 
@@ -46,12 +47,24 @@ public class MainMenu {
                 "5. Back to Main Menu\n");
 
         switch (InputHandler.getNumberInput()) {
-            case "1": ;
-            case "2": ;
-            case "3": { System.out.println("Please enter a room number (1 - 300)");
-                api.HotelResource.getRoom(InputHandler.getRoomNumber()); }
-            case "4": api.HotelResource.getCustomerReservations(InputHandler.enterEmail());
-            case "5": menuItems00();
+            case "1" -> {
+                System.out.println("No such option yet");
+                menuItems01();
+            }
+            case "2" -> {
+                System.out.println("No such option");
+                menuItems01();
+            }
+            case "3" -> {
+                System.out.println("Please enter a room number (1 - 300)"); //TODO check for rooms in the hotel first, and give option only if there are some.
+                api.HotelResource.getRoom(InputHandler.getRoomNumber());
+                menuItems01();
+            }
+            case "4" -> {
+                api.HotelResource.getCustomerReservations(InputHandler.enterEmail());
+                menuItems01();
+            }
+            case "5" -> menuItems00();
         }
     }
 
@@ -108,14 +121,23 @@ public class MainMenu {
                 "4. Add a room\n" +
                 "5. Back to Main Menu");
         switch(InputHandler.getNumberInput()) {
-            case "1": AdminResource.getAllCustomers();
-            case "2": {for (IRoom room : AdminResource.getAllRooms()) {
-                room.toString();
-                } }
-            case "3": { AdminResource.displayAllReservations();
+            case "1" -> {
+                System.out.println("List of Customers is:");
+                System.out.println(AdminResource.getAllCustomers());
+                menuItems04();
+            }
+            case "2" -> {
+                System.out.println("Hotel rooms are:");
+                for (IRoom room : AdminResource.getAllRooms()) {
+                    System.out.println(room + "\n");
+                }
+                menuItems04();
+            }
+            case "3" -> {
+                AdminResource.displayAllReservations();
                 menuItems04();
                 }
-            case "4": {
+            case "4" -> {
                 System.out.println("Welcome to room addition menu:");
                 List<IRoom> roomsList = new LinkedList<>();
                 String roomNumber;
@@ -142,7 +164,7 @@ public class MainMenu {
                 AdminResource.addRoom(roomsList);
                 menuItems04();
             }
-            case "5": menuItems00();
+            case "5" -> menuItems00();
         }
 
     }

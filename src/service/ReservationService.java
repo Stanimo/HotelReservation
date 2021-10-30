@@ -58,7 +58,7 @@ public class ReservationService {
 
     public static void printAllReservation() {
         for(Map.Entry<Customer, Reservation> customer1 : reservations.entrySet()) {
-            reservations.get(customer1).toString();
+            System.out.println(customer1);
         }
     }
 }
