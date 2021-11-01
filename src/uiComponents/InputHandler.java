@@ -83,42 +83,51 @@ public abstract class InputHandler {
 
     public static String getRoomNumber() {
         String userInput = "0";
-        try {
+        boolean done = false;
+            try {
                 BufferedReader inputRead = new BufferedReader(new InputStreamReader(System.in));
-            try { //TODO an implementation needed that runs through this loop and catches exceptions every time.
-                    userInput = inputRead.readLine();
-                 while (Integer.parseInt(userInput) < 1 || Integer.parseInt(userInput) > 300) {
-
-                    System.out.println("This input is illegal.\n" +
-                            "Please enter a room number in range between 1 - 300:");
-                    userInput = inputRead.readLine();
+                while(!done) {
+                    try {
+                        userInput = inputRead.readLine();
+                        while (Integer.parseInt(userInput) < 1 || Integer.parseInt(userInput) > 300) {
+                            System.out.println("This input is illegal.\n" +
+                                    "Please enter a room number in range between 1 - 300:");
+                            userInput = inputRead.readLine();
+                            if(Integer.parseInt(userInput) < 300 || Integer.parseInt(userInput) > 1) {
+                                done = true;
+                            }
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Exception " + e + "occurred\n" +
+                                "The input should be an integer number between 1 and 300");
                     }
-                } catch (NumberFormatException e) {
-                System.out.println("Exception " + e + "occurred\n" +
-                        "The input should be an integer number between 1 and 300");
-                userInput = inputRead.readLine();
+                }
+            } catch (IOException e) {
+                System.out.println("IOException: " + e);
             }
-        } catch (IOException e) {
-            System.out.println("IOException: " + e);
-        }
         return userInput;
     }
 
     public static Double getRoomPrice() {
         String userInput = "0.0";
+        boolean done = false;
         try {
             BufferedReader inputRead = new BufferedReader(new InputStreamReader(System.in));
-            try {
-            userInput = inputRead.readLine();
-                while (Double.parseDouble(userInput) < 0 || Double.parseDouble(userInput) > 5000) {
-                    System.out.println("This input is illegal.\n" +
-                            "Please enter a price in range $0 - $5000");
+            while(!done) {
+                try {
                     userInput = inputRead.readLine();
+                    while (Double.parseDouble(userInput) < 0 || Double.parseDouble(userInput) > 5000) {
+                        System.out.println("This input is illegal.\n" +
+                                "Please enter a price in range $0 - $5000");
+                        userInput = inputRead.readLine();
+                        if(Double.parseDouble(userInput) > 0 || Double.parseDouble(userInput) < 5000) {
+                            done = true;
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Exception: " + e + "occurred\n" +
+                            "The input should be a number.");
                 }
-            } catch (NumberFormatException e) {
-                System.out.println("Exception: " + e + "occurred\n" +
-                        "The input should be a number.");
-                userInput = inputRead.readLine();
             }
         } catch (IOException e) {
             System.out.println("IOException: " + e);
