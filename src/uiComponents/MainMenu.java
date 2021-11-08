@@ -1,17 +1,16 @@
 package uiComponents;
 
 import api.AdminResource;
+import api.HotelResource;
 import model.IRoom;
 import model.Room;
 import model.RoomType;
 
-import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 
 public class MainMenu {
 
@@ -28,7 +27,7 @@ public class MainMenu {
         System.out.println("4. Admin");
         System.out.println("5. Exit");
 
-        String input = InputHandler.getNumberInput();
+        String input = InputHandler.inputNumber();
         switch (input) {
             case "1" -> menuItems01();
             case "2" -> menuItems02();
@@ -46,7 +45,7 @@ public class MainMenu {
                 "4. See all customer reservations\n" +
                 "5. Back to Main Menu\n");
 
-        switch (InputHandler.getNumberInput()) {
+        switch (InputHandler.inputNumber()) {
             case "1" -> {
                 System.out.println("No such option yet");
                 menuItems01();
@@ -56,12 +55,16 @@ public class MainMenu {
                 menuItems01();
             }
             case "3" -> {
-                System.out.println("Please enter a room number (1 - 300)"); //TODO check for rooms in the hotel first, and give option only if there are some.
-                api.HotelResource.getRoom(InputHandler.getRoomNumber());
+                System.out.println("Rooms in the hotel are:");
+                for (IRoom room : AdminResource.getAllRooms()) {
+                    System.out.println(room.getRoomNumber() + "\n");
+                }
+                System.out.println("Please enter a room number (1 - 300)");
+                System.out.println(HotelResource.getRoom(InputHandler.inputRoomNumber()));
                 menuItems01();
             }
             case "4" -> {
-                api.HotelResource.getCustomerReservations(InputHandler.enterEmail());
+                api.HotelResource.getCustomerReservations(InputHandler.inputEmail());
                 menuItems01();
             }
             case "5" -> menuItems00();
@@ -78,7 +81,7 @@ public class MainMenu {
             menuItems03();
         } else {
             System.out.println("Please insert your email: ");
-            email = InputHandler.enterEmail();
+            email = InputHandler.inputEmail();
             System.out.println("Your reservations are:");
             api.HotelResource.getCustomerReservations(email);
             System.out.println("Thank you!\n");
@@ -102,7 +105,7 @@ public class MainMenu {
             lastName = lastNameRead.readLine();
 
             System.out.println("Please enter email:");
-            email = InputHandler.enterEmail();
+            email = InputHandler.inputEmail();
             System.out.println("The email is: " + email);
 
             api.HotelResource.createACustomer(email, firstName, lastName);
@@ -120,7 +123,7 @@ public class MainMenu {
                 "3. View all hotel reservations\n" +
                 "4. Add a room\n" +
                 "5. Back to Main Menu");
-        switch(InputHandler.getNumberInput()) {
+        switch(InputHandler.inputNumber()) {
             case "1" -> {
                 System.out.println("List of Customers is:");
                 System.out.println(AdminResource.getAllCustomers());
@@ -147,13 +150,13 @@ public class MainMenu {
 
                 do {
                     System.out.println("Please insert room number:");
-                    roomNumber = InputHandler.getRoomNumber();
+                    roomNumber = InputHandler.inputRoomNumber();
 
                     System.out.println("Please insert room " + roomNumber + " price:");
-                    roomPrice = InputHandler.getRoomPrice();
+                    roomPrice = InputHandler.inputRoomPrice();
 
                     System.out.println("Please insert room " + roomNumber + " type:");
-                    roomType = InputHandler.getRoomType();
+                    roomType = InputHandler.inputRoomType();
 
                     roomsList.add(new Room(roomNumber, roomPrice, roomType));
                     System.out.println("Add another a room? (y/n)");

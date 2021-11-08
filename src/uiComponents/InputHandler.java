@@ -30,7 +30,7 @@ public abstract class InputHandler {
         return userInput;
     }
 
-    public static String enterEmail() {
+    public static String inputEmail() {
         Pattern pattern = Pattern.compile(emailRegex);
         String userInput = null;
         try {
@@ -47,7 +47,7 @@ public abstract class InputHandler {
         return userInput;
     }
 
-    public static String getNumberInput() {
+    public static String inputNumber() {
         Pattern pattern = Pattern.compile(inputRegex);
         String userInput = null;
         try {
@@ -81,7 +81,7 @@ public abstract class InputHandler {
         return userInput;
     }
 
-    public static String getRoomNumber() {
+    public static String inputRoomNumber() {
         String userInput = "0";
         boolean done = false;
             try {
@@ -97,6 +97,9 @@ public abstract class InputHandler {
                                 done = true;
                             }
                         }
+                        if(Integer.parseInt(userInput) < 300 || Integer.parseInt(userInput) > 1) {
+                            done = true;
+                        }
                     } catch (NumberFormatException e) {
                         System.out.println("Exception " + e + "occurred\n" +
                                 "The input should be an integer number between 1 and 300");
@@ -108,7 +111,7 @@ public abstract class InputHandler {
         return userInput;
     }
 
-    public static Double getRoomPrice() {
+    public static Double inputRoomPrice() {
         String userInput = "0.0";
         boolean done = false;
         try {
@@ -124,6 +127,9 @@ public abstract class InputHandler {
                             done = true;
                         }
                     }
+                    if(Integer.parseInt(userInput) > 0 || Integer.parseInt(userInput) < 5000) {
+                        done = true;
+                    }
                 } catch (NumberFormatException e) {
                     System.out.println("Exception: " + e + "occurred\n" +
                             "The input should be a number.");
@@ -135,7 +141,7 @@ public abstract class InputHandler {
         return Double.parseDouble(userInput);
     }
 
-    public static RoomType getRoomType() {
+    public static RoomType inputRoomType() {
         Pattern pattern = Pattern.compile(roomTypeRegex);
         String userInput = null;
             System.out.println("Please enter a `s` for Single room or `d` for Double room");
